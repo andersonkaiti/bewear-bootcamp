@@ -19,11 +19,7 @@ import {
 } from '@components/ui/form'
 import { Input } from '@components/ui/input'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { authClient } from '@lib/auth-client'
-import { Loader2 } from 'lucide-react'
-import { redirect } from 'next/navigation'
 import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
 import z from 'zod'
 
 const formSchema = z.object({
@@ -42,36 +38,8 @@ export function SignInForm() {
     },
   })
 
-  async function onSubmit(values: FormState) {
-    await authClient.signIn.email({
-      ...values,
-      fetchOptions: {
-        onSuccess: () => {
-          toast.success('Usuário logado com sucesso!')
-
-          redirect('/')
-        },
-        onError: (ctx) => {
-          if (ctx.error.code === 'USER_NOT_FOUND') {
-            toast.error('E-mail não encontrado.')
-
-            return form.setError('email', {
-              message: 'E-mail não encontrado',
-            })
-          }
-
-          if (ctx.error.code === 'INVALID_EMAIL_OR_PASSWORD') {
-            toast.error('E-mail ou senha inválidos.')
-
-            return form.setError('email', {
-              message: 'E-mail ou senha inválidos',
-            })
-          }
-
-          toast.error(ctx.error.message)
-        },
-      },
-    })
+  function onSubmit(values: FormState) {
+    console.log(values)
   }
 
   return (
@@ -104,11 +72,7 @@ export function SignInForm() {
                 <FormItem>
                   <FormLabel>Senha</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Digite sua senha"
-                      {...field}
-                      type="password"
-                    />
+                    <Input placeholder="Digite sua senha" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -116,13 +80,7 @@ export function SignInForm() {
             />
           </CardContent>
           <CardFooter>
-            <Button className="w-full">
-              {form.formState.isSubmitting ? (
-                <Loader2 className="animate-spin" />
-              ) : (
-                'Entrar'
-              )}
-            </Button>
+            <Button className="w-full">Entrar</Button>
           </CardFooter>
         </form>
       </Form>
