@@ -19,6 +19,8 @@ import {
 } from '@components/ui/form'
 import { Input } from '@components/ui/input'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { authClient } from '@lib/auth-client'
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import z from 'zod'
 
@@ -37,6 +39,8 @@ const formSchema = z
 type FormState = z.infer<typeof formSchema>
 
 export function SignUpForm() {
+  const router = useRouter()
+
   const form = useForm<FormState>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -45,8 +49,30 @@ export function SignUpForm() {
     },
   })
 
-  function onSubmit(values: FormState) {
-    console.log(values)
+  async function onSubmit(values: FormState) {
+    await authClient.signUp.email({
+      ...values,
+      fetchOptions: {
+        onSuccess: () => {
+          toast.success('Conta criada com sucesso!')
+
+          router.push('/')
+        },
+        onError: (ctx) => {
+          toast.error(
+            BASE_ERROR_MESSAGES[
+              ctx.error.code as keyof typeof BASE_ERROR_MESSAGES
+            ]
+          )
+
+          if (ctx.error.code === BASE_ERROR_MESSAGES.USER_ALREADY_EXISTS) {
+            form.setError('email', {
+              message: 'E-mail já cadastrado',
+            })
+          }
+        },
+      },
+    })
   }
 
   return (
