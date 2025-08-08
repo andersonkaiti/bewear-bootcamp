@@ -1,5 +1,43 @@
-import { Header } from '@components/common/header'
+import { Header } from '@components/common/layout/header'
+import { ProductList } from '@components/common/product/product-list'
+import { db } from '@db/index'
+import Image from 'next/image'
 
-export default function Home() {
-  return <Header />
+export default async function Home() {
+  const products = await db.query.productTable.findMany({
+    with: {
+      variants: true,
+    },
+  })
+
+  return (
+    <>
+      <Header />
+      <div className="space-y-6">
+        <div className="px-5">
+          <Image
+            alt="Leve uma vida com estilo"
+            className="h-auto w-full"
+            height={0}
+            sizes="100vw"
+            src="/banner-01.png"
+            width={0}
+          />
+        </div>
+
+        <ProductList products={products} title="Mais vendidos" />
+
+        <div className="px-5">
+          <Image
+            alt="Leve uma vida com estilo"
+            className="h-auto w-full"
+            height={0}
+            sizes="100vw"
+            src="/banner-02.png"
+            width={0}
+          />
+        </div>
+      </div>
+    </>
+  )
 }
