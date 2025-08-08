@@ -22,6 +22,7 @@
       "@components/*": ["./src/components/*"],
       "@config/*": ["./src/config/*"],
       "@db/*": ["./src/db/*"],
+      "@helpers/*": ["./src/helpers/*"],
       "@lib/*": ["./src/lib/*"],
       "@/*": ["./src/*"]
     },
