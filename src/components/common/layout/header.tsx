@@ -9,8 +9,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@components/ui/sheet'
+import { getUserInitials } from '@helpers/user-initials'
 import { authClient } from '@lib/auth-client'
-import { getUserInitials } from '@lib/utils'
 import { LogInIcon, LogOutIcon, MenuIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'

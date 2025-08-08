@@ -23,6 +23,7 @@ import { authClient } from '@lib/auth-client'
 import { Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import z from 'zod'
 
 const formSchema = z.object({
@@ -105,7 +106,11 @@ export function SignInForm() {
                 <FormItem>
                   <FormLabel>Senha</FormLabel>
                   <FormControl>
-                    <Input placeholder="Digite sua senha" {...field} />
+                    <Input
+                      placeholder="Digite sua senha"
+                      {...field}
+                      type="password"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -113,7 +118,17 @@ export function SignInForm() {
             />
           </CardContent>
           <CardFooter>
-            <Button className="w-full">Entrar</Button>
+            <Button
+              className="w-full"
+              disabled={form.formState.isSubmitting}
+              type="submit"
+            >
+              {form.formState.isSubmitting ? (
+                <Loader2 className="animate-spin" />
+              ) : (
+                'Criar conta'
+              )}{' '}
+            </Button>
           </CardFooter>
         </form>
       </Form>
