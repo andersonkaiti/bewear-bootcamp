@@ -1,5 +1,6 @@
 'use client'
 
+import googleLogo from '@assets/google.svg'
 import { Button } from '@components/ui/button'
 import {
   Card,
@@ -21,6 +22,7 @@ import { Input } from '@components/ui/input'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { authClient } from '@lib/auth-client'
 import { Loader2 } from 'lucide-react'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -76,6 +78,12 @@ export function SignInForm() {
     })
   }
 
+  async function handleSignInWithGoogle() {
+    await authClient.signIn.social({
+      provider: 'google',
+    })
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -117,7 +125,7 @@ export function SignInForm() {
               )}
             />
           </CardContent>
-          <CardFooter>
+          <CardFooter className="flex-col gap-2">
             <Button
               className="w-full"
               disabled={form.formState.isSubmitting}
@@ -128,6 +136,16 @@ export function SignInForm() {
               ) : (
                 'Criar conta'
               )}{' '}
+            </Button>
+
+            <Button
+              className="w-full"
+              onClick={handleSignInWithGoogle}
+              type="button"
+              variant="outline"
+            >
+              <Image alt="Google" className="size-4" src={googleLogo} />
+              Entrar com google
             </Button>
           </CardFooter>
         </form>

@@ -1,3 +1,4 @@
+import { env } from '@config/env'
 import { db } from '@db/index'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
@@ -11,6 +12,7 @@ import {
   productVariantTable,
   sessionTable,
   userTable,
+  verificationTable,
 } from '../db/schema'
 
 export const auth = betterAuth({
@@ -26,10 +28,17 @@ export const auth = betterAuth({
       productVariantTable,
       sessionTable,
       userTable,
+      verificationTable,
     },
   }),
   emailAndPassword: {
     enabled: true,
+  },
+  socialProviders: {
+    google: {
+      clientId: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
+    },
   },
   user: {
     modelName: 'userTable',
@@ -39,5 +48,8 @@ export const auth = betterAuth({
   },
   account: {
     modelName: 'accountTable',
+  },
+  verification: {
+    modelName: 'verificationTable',
   },
 })

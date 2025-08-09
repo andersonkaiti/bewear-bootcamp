@@ -10,6 +10,7 @@ import {
   productVariantTable,
   sessionTable,
   userTable,
+  verificationTable,
 } from './schema'
 
 export const db = drizzle(env.DATABASE_URL, {
@@ -23,5 +24,6 @@ export const db = drizzle(env.DATABASE_URL, {
     productVariantTable,
     sessionTable,
     userTable,
+    verificationTable,
   },
 })
