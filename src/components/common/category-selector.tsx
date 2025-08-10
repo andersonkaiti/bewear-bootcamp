@@ -1,5 +1,6 @@
 import { Button } from '@components/ui/button'
 import type { categoryTable } from '@db/schema'
+import Link from 'next/link'
 
 interface ICategorySelectorProps {
   categories: (typeof categoryTable.$inferSelect)[]
@@ -15,7 +16,9 @@ export function CategorySelector({ categories }: ICategorySelectorProps) {
             key={category.id}
             variant="ghost"
           >
-            {category.name}
+            <Link className="size-full" href={`/category/${category.slug}`}>
+              {category.name}
+            </Link>
           </Button>
         ))}
       </div>
