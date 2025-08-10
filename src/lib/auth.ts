@@ -2,34 +2,13 @@ import { env } from '@config/env'
 import { db } from '@db/index'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
-import {
-  accountTable,
-  categoryRelations,
-  categoryTable,
-  productRelations,
-  productTable,
-  productVariantRelations,
-  productVariantTable,
-  sessionTable,
-  userTable,
-  verificationTable,
-} from '../db/schema'
+// biome-ignore lint/performance/noNamespaceImport: simple way
+import * as schema from '../db/schema'
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: 'pg',
-    schema: {
-      accountTable,
-      categoryRelations,
-      categoryTable,
-      productRelations,
-      productTable,
-      productVariantRelations,
-      productVariantTable,
-      sessionTable,
-      userTable,
-      verificationTable,
-    },
+    schema,
   }),
   emailAndPassword: {
     enabled: true,
