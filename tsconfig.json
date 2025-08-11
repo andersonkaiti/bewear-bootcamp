@@ -26,6 +26,7 @@
       "@db/*": ["./src/db/*"],
       "@helpers/*": ["./src/helpers/*"],
       "@lib/*": ["./src/lib/*"],
+      "@providers/*": ["./src/providers/*"],
       "@/*": ["./src/*"]
     },
     "strictNullChecks": true

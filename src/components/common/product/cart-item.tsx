@@ -28,7 +28,7 @@ export function CartItem({ productVariant }: ICartItemProps) {
             {productVariant.name}
           </p>
 
-          <div className="flex w-[70px] items-center justify-between rounded-lg border p-1">
+          <div className="flex w-[100px] items-center justify-between rounded-lg border p-1">
             <Button className="size-4" size="icon" variant="ghost">
               <MinusIcon />
             </Button>
