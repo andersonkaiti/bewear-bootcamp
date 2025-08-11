@@ -36,7 +36,7 @@ export function Cart() {
           <div className="flex h-full max-h-full flex-col overflow-hidden">
             <ScrollArea className="h-full">
               {cart?.items?.map((item) => (
-                <CartItem key={item.id} productVariant={item.productVariant} />
+                <CartItem item={item} key={item.id} />
               ))}
             </ScrollArea>
           </div>
