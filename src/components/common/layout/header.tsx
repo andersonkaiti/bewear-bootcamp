@@ -14,6 +14,7 @@ import { authClient } from '@lib/auth-client'
 import { LogInIcon, LogOutIcon, MenuIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { Cart } from '../product/cart'
 
 export function Header() {
   const { data: session } = authClient.useSession()
@@ -24,7 +25,7 @@ export function Header() {
         <Image alt="BEWEAR" height={26.14} src="/logo.svg" width={100} />
       </Link>
 
-      <div className="flex items-center">
+      <div className="flex items-center gap-2">
         <Sheet>
           <SheetTrigger asChild>
             <Button size="icon" variant="outline">
@@ -77,6 +78,8 @@ export function Header() {
             </div>
           </SheetContent>
         </Sheet>
+
+        {session?.user && <Cart />}
       </div>
     </header>
   )

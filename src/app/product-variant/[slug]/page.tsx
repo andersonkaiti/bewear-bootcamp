@@ -1,14 +1,13 @@
 import { Footer } from '@components/common/layout/footer'
 import { Header } from '@components/common/layout/header'
 import { ProductList } from '@components/common/product/product-list'
-import { Button } from '@components/ui/button'
 import { db } from '@db/index'
 import { productTable, productVariantTable } from '@db/schema'
 import { formatCentsToBRL } from '@helpers/money'
 import { eq } from 'drizzle-orm'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
-import { QuantitySelector } from './_components/quantity-selector'
+import { ProductActions } from './_components/product-actions'
 import { VariantSelector } from './_components/variants-selector'
 
 interface IProductVariantPageProps {
@@ -77,18 +76,7 @@ export default async function ProductVariantPage({
           </h3>
         </div>
 
-        <div className="px-5">
-          <QuantitySelector />
-        </div>
-
-        <div className="flex flex-col gap-4 px-4">
-          <Button className="rounded-full" variant="outline">
-            Adicionar à sacola
-          </Button>
-          <Button className="rounded-full" size="lg">
-            Comprar agora
-          </Button>
-        </div>
+        <ProductActions productVariantId={productVariant.id} />
 
         <div className="px-5">
           <p className="text-sm">{productVariant.product.description}</p>

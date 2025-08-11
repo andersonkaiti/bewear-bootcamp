@@ -1,6 +1,6 @@
-import { CategorySelector } from '@components/common/category-selector'
 import { Footer } from '@components/common/layout/footer'
 import { Header } from '@components/common/layout/header'
+import { CategorySelector } from '@components/common/product/category-selector'
 import { ProductList } from '@components/common/product/product-list'
 import { db } from '@db/index'
 import { productTable } from '@db/schema'

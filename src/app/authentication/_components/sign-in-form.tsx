@@ -134,7 +134,7 @@ export function SignInForm() {
               {form.formState.isSubmitting ? (
                 <Loader2 className="animate-spin" />
               ) : (
-                'Criar conta'
+                'Entrar'
               )}{' '}
             </Button>
 
