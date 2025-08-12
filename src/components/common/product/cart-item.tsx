@@ -1,6 +1,3 @@
-import { addProductToCartAction } from '@action/add-cart-product'
-import { decreaseCartProductQuantityAction } from '@action/decrease-cart-product-quantity'
-import { removeCartProductAction } from '@action/remove-cart-product'
 import { Button } from '@components/ui/button'
 import type {
   cartItemTable,
@@ -8,7 +5,9 @@ import type {
   productVariantTable,
 } from '@db/schema'
 import { formatCentsToBRL } from '@helpers/money'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useDecreaseCartProductQuantity } from '@hooks/mutations/use-decrease-cart-product-quantity'
+import { useIncreaseCartProjectQuantity } from '@hooks/mutations/use-increase-cart-project-quantity'
+import { useRemoveProductFromCart } from '@hooks/mutations/use-remove-product-from-cart'
 import { MinusIcon, PlusIcon, TrashIcon } from 'lucide-react'
 import Image from 'next/image'
 import { toast } from 'sonner'
@@ -22,42 +21,15 @@ interface ICartItemProps {
 }
 
 export function CartItem({ item }: ICartItemProps) {
-  const queryClient = useQueryClient()
+  const { mutate: removeProductFromCartMutation } = useRemoveProductFromCart(
+    item.id
+  )
 
-  const { mutate: removeProductFromCartMutation } = useMutation({
-    mutationKey: ['remove-cart-product'],
-    mutationFn: () => removeCartProductAction({ cartItemId: item.id }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['cart'],
-      })
-    },
-  })
+  const { mutate: decreaseCartProductQuantityMutation } =
+    useDecreaseCartProductQuantity(item.id)
 
-  const { mutate: decreaseCartProductQuantityMutation } = useMutation({
-    mutationKey: ['decrease-cart-product-quantity'],
-    mutationFn: () =>
-      decreaseCartProductQuantityAction({ cartItemId: item.id }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['cart'],
-      })
-    },
-  })
-
-  const { mutate: increaseCartProductQuantityMutation } = useMutation({
-    mutationKey: ['increase-cart-product-quantity'],
-    mutationFn: () =>
-      addProductToCartAction({
-        productVariantId: item.productVariant.id,
-        quantity: 1,
-      }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['cart'],
-      })
-    },
-  })
+  const { mutate: increaseCartProductQuantityMutation } =
+    useIncreaseCartProjectQuantity(item.productVariantId)
 
   const handleDeleteClick = () => {
     removeProductFromCartMutation(undefined, {
