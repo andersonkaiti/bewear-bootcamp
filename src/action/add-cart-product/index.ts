@@ -59,7 +59,7 @@ export async function addProductToCartAction(data: AddProductToCartSchema) {
       .set({
         quantity: cartItem.quantity + data.quantity,
       })
-      .where(eq(cartItemTable.id, cartItem.cartId))
+      .where(eq(cartItemTable.id, cartItem.id))
 
     return
   }

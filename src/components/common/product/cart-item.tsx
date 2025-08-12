@@ -1,3 +1,4 @@
+import { addProductToCartAction } from '@action/add-cart-product'
 import { decreaseCartProductQuantityAction } from '@action/decrease-cart-product-quantity'
 import { removeCartProductAction } from '@action/remove-cart-product'
 import { Button } from '@components/ui/button'
@@ -44,6 +45,20 @@ export function CartItem({ item }: ICartItemProps) {
     },
   })
 
+  const { mutate: increaseCartProductQuantityMutation } = useMutation({
+    mutationKey: ['increase-cart-product-quantity'],
+    mutationFn: () =>
+      addProductToCartAction({
+        productVariantId: item.productVariant.id,
+        quantity: 1,
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['cart'],
+      })
+    },
+  })
+
   const handleDeleteClick = () => {
     removeProductFromCartMutation(undefined, {
       onSuccess: () => {
@@ -61,7 +76,18 @@ export function CartItem({ item }: ICartItemProps) {
         toast.success('Quantidade do produto diminuída!')
       },
       onError: () => {
-        toast.success('Erro ao diminuir quantidade o produto!')
+        toast.success('Erro ao diminuir quantidade do produto!')
+      },
+    })
+  }
+
+  const handleIncreaseCartProductQuantityClick = () => {
+    increaseCartProductQuantityMutation(undefined, {
+      onSuccess: () => {
+        toast.success('Quantidade do produto aumentada!')
+      },
+      onError: () => {
+        toast.success('Erro ao diminuir aumentar a quantidade do produto!')
       },
     })
   }
@@ -94,7 +120,12 @@ export function CartItem({ item }: ICartItemProps) {
               <MinusIcon />
             </Button>
             <p className="text-sm">{item.quantity}</p>
-            <Button className="size-4" size="icon" variant="ghost">
+            <Button
+              className="size-4"
+              onClick={handleIncreaseCartProductQuantityClick}
+              size="icon"
+              variant="ghost"
+            >
               <PlusIcon />
             </Button>
           </div>
