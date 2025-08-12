@@ -11,6 +11,7 @@ import {
 import { formatCentsToBRL } from '@helpers/money'
 import { useCart } from '@hooks/queries/use-cart'
 import { ShoppingBasketIcon } from 'lucide-react'
+import Link from 'next/link'
 import { CartItem } from './cart-item'
 
 export function Cart() {
@@ -58,7 +59,11 @@ export function Cart() {
                 <p>{formatCentsToBRL(cart?.totalPriceInCents) ?? 0}</p>
               </div>
 
-              <Button className="rounded-full">Finalizar compra</Button>
+              <Button asChild className="rounded-full">
+                <Link className="size-full" href="/cart/identification">
+                  Finalizar compra
+                </Link>
+              </Button>
             </div>
           )}
         </div>
