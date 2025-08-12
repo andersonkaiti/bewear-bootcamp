@@ -6,7 +6,7 @@ import type {
 } from '@db/schema'
 import { formatCentsToBRL } from '@helpers/money'
 import { useDecreaseCartProductQuantity } from '@hooks/mutations/use-decrease-cart-product-quantity'
-import { useIncreaseCartProjectQuantity } from '@hooks/mutations/use-increase-cart-project-quantity'
+import { useIncreaseCartProductQuantity } from '@hooks/mutations/use-increase-cart-product-quantity'
 import { useRemoveProductFromCart } from '@hooks/mutations/use-remove-product-from-cart'
 import { MinusIcon, PlusIcon, TrashIcon } from 'lucide-react'
 import Image from 'next/image'
@@ -29,7 +29,7 @@ export function CartItem({ item }: ICartItemProps) {
     useDecreaseCartProductQuantity(item.id)
 
   const { mutate: increaseCartProductQuantityMutation } =
-    useIncreaseCartProjectQuantity(item.productVariantId)
+    useIncreaseCartProductQuantity(item.productVariantId)
 
   const handleDeleteClick = () => {
     removeProductFromCartMutation(undefined, {
