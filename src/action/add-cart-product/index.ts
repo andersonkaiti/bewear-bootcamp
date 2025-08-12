@@ -7,7 +7,7 @@ import { eq } from 'drizzle-orm'
 import { headers } from 'next/headers'
 import { type AddProductToCartSchema, addProductToCartSchema } from './schema'
 
-export async function addProductToCart(data: AddProductToCartSchema) {
+export async function addProductToCartAction(data: AddProductToCartSchema) {
   addProductToCartSchema.parse(data)
 
   const session = await auth.api.getSession({

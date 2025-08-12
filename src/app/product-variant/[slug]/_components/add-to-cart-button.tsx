@@ -1,6 +1,6 @@
 'use client'
 
-import { addProductToCart } from '@action/add-cart-product'
+import { addProductToCartAction } from '@action/add-cart-product'
 import { Button } from '@components/ui/button'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Loader2 } from 'lucide-react'
@@ -19,7 +19,7 @@ export function AddToCartButton({
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['addProductToCart', productVariantId, quantity],
-    mutationFn: () => addProductToCart({ productVariantId, quantity }),
+    mutationFn: () => addProductToCartAction({ productVariantId, quantity }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['cart'] })
       toast.success('Produto adicionado com sucesso!')

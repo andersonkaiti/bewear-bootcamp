@@ -21,19 +21,17 @@ export function ProductActions({ productVariantId }: IProductActionsProps) {
   }
   return (
     <>
-      <div className="px-5">
-        <div className="space-y-4">
-          <h3 className="font-medium">Quantidade</h3>
+      <div className="space-y-4 px-5">
+        <h3 className="font-medium">Quantidade</h3>
 
-          <div className="flex w-[100px] items-center justify-between rounded-lg border">
-            <Button onClick={handleDecrement} size="icon" variant="ghost">
-              <MinusIcon />
-            </Button>
-            <p>{quantity}</p>
-            <Button onClick={handleIncrement} size="icon" variant="ghost">
-              <PlusIcon />
-            </Button>
-          </div>
+        <div className="flex w-[100px] items-center justify-between rounded-lg border">
+          <Button onClick={handleDecrement} size="icon" variant="ghost">
+            <MinusIcon />
+          </Button>
+          <p>{quantity}</p>
+          <Button onClick={handleIncrement} size="icon" variant="ghost">
+            <PlusIcon />
+          </Button>
         </div>
       </div>
 

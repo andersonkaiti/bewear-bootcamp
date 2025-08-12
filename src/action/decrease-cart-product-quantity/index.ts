@@ -6,14 +6,14 @@ import { auth } from '@lib/auth'
 import { eq } from 'drizzle-orm'
 import { headers } from 'next/headers'
 import {
-  type RemoveProductFromCartSchema,
-  removeProductFromCartSchema,
+  type DecreaseCartProductQuantitySchema,
+  decreaseCartProductQuantitySchema,
 } from './schema'
 
-export async function removeCartProductAction(
-  data: RemoveProductFromCartSchema
+export async function decreaseCartProductQuantityAction(
+  data: DecreaseCartProductQuantitySchema
 ) {
-  removeProductFromCartSchema.parse(data)
+  decreaseCartProductQuantitySchema.parse(data)
 
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -41,5 +41,14 @@ export async function removeCartProductAction(
     throw new Error('Unauthorized')
   }
 
-  await db.delete(cartItemTable).where(eq(cartItemTable.id, cartItem.id))
+  if (cartItem.quantity === 1) {
+    await db.delete(cartItemTable).where(eq(cartItemTable.id, cartItem.id))
+
+    return
+  }
+
+  await db
+    .update(cartItemTable)
+    .set({ quantity: cartItem.quantity - 1 })
+    .where(eq(cartItemTable.id, cartItem.id))
 }

@@ -1,3 +1,4 @@
+import { decreaseCartProductQuantityAction } from '@action/decrease-cart-product-quantity'
 import { removeCartProductAction } from '@action/remove-cart-product'
 import { Button } from '@components/ui/button'
 import type {
@@ -32,6 +33,17 @@ export function CartItem({ item }: ICartItemProps) {
     },
   })
 
+  const { mutate: decreaseCartProductQuantityMutation } = useMutation({
+    mutationKey: ['decrease-cart-product-quantity'],
+    mutationFn: () =>
+      decreaseCartProductQuantityAction({ cartItemId: item.id }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['cart'],
+      })
+    },
+  })
+
   const handleDeleteClick = () => {
     removeProductFromCartMutation(undefined, {
       onSuccess: () => {
@@ -39,6 +51,17 @@ export function CartItem({ item }: ICartItemProps) {
       },
       onError: () => {
         toast.success('Erro ao remover produto do carrinho!')
+      },
+    })
+  }
+
+  const handleDecreaseCartProductQuantityClick = () => {
+    decreaseCartProductQuantityMutation(undefined, {
+      onSuccess: () => {
+        toast.success('Quantidade do produto diminuída!')
+      },
+      onError: () => {
+        toast.success('Erro ao diminuir quantidade o produto!')
       },
     })
   }
@@ -61,11 +84,16 @@ export function CartItem({ item }: ICartItemProps) {
             {item.productVariant.name}
           </p>
 
-          <div className="flex w-[100px] items-center justify-between rounded-lg border p-1">
-            <Button className="size-4" size="icon" variant="ghost">
+          <div className="flex w-fit items-center justify-between gap-2 rounded-lg border p-1">
+            <Button
+              className="size-4"
+              onClick={handleDecreaseCartProductQuantityClick}
+              size="icon"
+              variant="ghost"
+            >
               <MinusIcon />
             </Button>
-            <p className="text-sm">1</p>
+            <p className="text-sm">{item.quantity}</p>
             <Button className="size-4" size="icon" variant="ghost">
               <PlusIcon />
             </Button>
