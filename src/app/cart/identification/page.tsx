@@ -1,6 +1,6 @@
 import { Header } from '@components/common/layout/header'
 import { db } from '@db/index'
-import { cartTable, shippingAddressTable } from '@db/schema'
+import { shippingAddressTable } from '@db/schema'
 import { auth } from '@lib/auth'
 import { eq } from 'drizzle-orm'
 import { headers } from 'next/headers'
@@ -17,9 +17,18 @@ export default async function IdentificationPage() {
   }
 
   const cart = await db.query.cartTable.findFirst({
-    where: eq(cartTable.userId, session?.user.id),
+    where: (table) => eq(table.userId, session.user.id),
     with: {
-      items: true,
+      items: {
+        with: {
+          productVariant: {
+            with: {
+              product: true,
+            },
+          },
+        },
+      },
+      shippingAddress: true,
     },
   })
 
@@ -36,7 +45,10 @@ export default async function IdentificationPage() {
       <Header />
 
       <div className="px-5">
-        <Addresses shippingAddresses={shippingAddresses} />
+        <Addresses
+          defaultShippingAddressId={cart.shippingAddress?.id || null}
+          shippingAddresses={shippingAddresses}
+        />
       </div>
     </>
   )

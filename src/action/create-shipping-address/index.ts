@@ -3,6 +3,7 @@
 import { db } from '@db/index'
 import { shippingAddressTable } from '@db/schema'
 import { auth } from '@lib/auth'
+import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 import {
   type CreateShippingAddressSchema,
@@ -40,6 +41,8 @@ export async function createShippingAddressAction(
       cpfOrCnpj: data.cpf,
     })
     .returning()
+
+  revalidatePath('/cart/identification')
 
   return newAddress
 }

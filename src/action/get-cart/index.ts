@@ -26,6 +26,7 @@ export async function getCart() {
           },
         },
       },
+      shippingAddress: true,
     },
   })
 
@@ -41,6 +42,7 @@ export async function getCart() {
       ...newCart,
       items: [],
       totalPriceInCents: 0,
+      shippingAddress: null,
     }
   }
 

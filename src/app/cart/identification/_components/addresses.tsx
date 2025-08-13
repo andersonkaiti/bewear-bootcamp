@@ -46,10 +46,16 @@ type AddressFormState = z.infer<typeof addressFormSchema>
 
 interface IAddressesProps {
   shippingAddresses: (typeof shippingAddressTable.$inferSelect)[]
+  defaultShippingAddressId: string | null
 }
 
-export function Addresses({ shippingAddresses }: IAddressesProps) {
-  const [selectedAddress, setSelectedAddress] = useState<string | null>(null)
+export function Addresses({
+  shippingAddresses,
+  defaultShippingAddressId,
+}: IAddressesProps) {
+  const [selectedAddress, setSelectedAddress] = useState<string | null>(
+    defaultShippingAddressId
+  )
 
   const { data: addresses, isLoading: isLoadingAddresses } =
     useShippingAddresses({ initialData: shippingAddresses })
