@@ -15,6 +15,7 @@ import { Label } from '@components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useCreateShippingAddress } from '@hooks/mutations/use-create-shipping-address'
+import { useShippingAddresses } from '@hooks/queries/use-shipping-addresses'
 import { Loader2 } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -44,6 +45,8 @@ type AddressFormState = z.infer<typeof addressFormSchema>
 export function Addresses() {
   const [selectedAddress, setSelectedAddress] = useState<string | null>(null)
 
+  const { data: addresses, isLoading: isLoadingAddresses } =
+    useShippingAddresses()
   const { mutate: createShippingAddressMutation, isPending } =
     useCreateShippingAddress()
 
@@ -84,19 +87,49 @@ export function Addresses() {
       </CardHeader>
       <CardContent>
         <RadioGroup onValueChange={setSelectedAddress} value={selectedAddress}>
-          <Card>
-            <CardContent>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem id="add_new" value="add_new" />
-                <Label htmlFor="add_new">Adicionar novo endereço</Label>
-              </div>
-            </CardContent>
-          </Card>
+          {isLoadingAddresses ? (
+            <div className="flex items-center justify-center py-8">
+              <Loader2 className="h-6 w-6 animate-spin" />
+            </div>
+          ) : (
+            <>
+              {addresses?.map((address) => (
+                <Card className="mb-4" key={address.id}>
+                  <CardContent>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem id={address.id} value={address.id} />
+                      <Label
+                        className="flex-1 cursor-pointer"
+                        htmlFor={address.id}
+                      >
+                        <p>
+                          {address.recipientName}, {address.street},{' '}
+                          {address.number}
+                          {address.complement && `, ${address.complement}`},{' '}
+                          {address.neighborhood}, {address.city} -{' '}
+                          {address.state}, CEP: {address.zipCode}
+                        </p>
+                      </Label>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+
+              <Card>
+                <CardContent>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem id="add_new" value="add_new" />
+                    <Label htmlFor="add_new">Adicionar novo endereço</Label>
+                  </div>
+                </CardContent>
+              </Card>
+            </>
+          )}
         </RadioGroup>
 
         {selectedAddress === 'add_new' && (
           <Card className="mt-4">
-            <CardContent className="pt-6">
+            <CardContent>
               <Form {...form}>
                 <form
                   className="space-y-6"
