@@ -154,7 +154,7 @@ export function Addresses({
         {selectedAddress && selectedAddress !== 'add_new' && (
           <div className="mt-4">
             <Button
-              className="w-full"
+              className="w-full rounded-full"
               disabled={isUpdatingCart}
               onClick={() => {
                 updateCartShippingAddressMutation({
@@ -165,7 +165,7 @@ export function Addresses({
               {isUpdatingCart ? (
                 <Loader2 className="animate-spin" />
               ) : (
-                'Ir para pagamento'
+                'Continuar com o pagamento'
               )}
             </Button>
           </div>
