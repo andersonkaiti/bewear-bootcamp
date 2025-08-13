@@ -1,5 +1,6 @@
 import { createShippingAddressAction } from '@action/create-shipping-address'
 import type { CreateShippingAddressSchema } from '@action/create-shipping-address/schema'
+import type { shippingAddressTable } from '@db/schema'
 import { shippingAddressesQueryKey } from '@hooks/queries/use-shipping-addresses'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
@@ -10,7 +11,11 @@ export const createShippingAddressMutationKey = () => [
 export function useCreateShippingAddress() {
   const queryClient = useQueryClient()
 
-  return useMutation({
+  return useMutation<
+    typeof shippingAddressTable.$inferSelect,
+    Error,
+    CreateShippingAddressSchema
+  >({
     mutationFn: (data: CreateShippingAddressSchema) =>
       createShippingAddressAction(data),
     mutationKey: createShippingAddressMutationKey(),

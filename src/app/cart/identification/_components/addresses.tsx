@@ -16,6 +16,7 @@ import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group'
 import type { shippingAddressTable } from '@db/schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useCreateShippingAddress } from '@hooks/mutations/use-create-shipping-address'
+import { useUpdateCartShippingAddress } from '@hooks/mutations/use-update-cart-shipping-address'
 import { useShippingAddresses } from '@hooks/queries/use-shipping-addresses'
 import { Loader2 } from 'lucide-react'
 import { useState } from 'react'
@@ -56,6 +57,11 @@ export function Addresses({ shippingAddresses }: IAddressesProps) {
   const { mutate: createShippingAddressMutation, isPending } =
     useCreateShippingAddress()
 
+  const {
+    mutate: updateCartShippingAddressMutation,
+    isPending: isUpdatingCart,
+  } = useUpdateCartShippingAddress()
+
   const form = useForm<AddressFormState>({
     resolver: zodResolver(addressFormSchema),
     defaultValues: {
@@ -75,10 +81,16 @@ export function Addresses({ shippingAddresses }: IAddressesProps) {
 
   function onSubmit(values: AddressFormState) {
     createShippingAddressMutation(values, {
-      onSuccess: () => {
+      onSuccess: (newAddress) => {
         toast.success('Endereço salvo com sucesso!')
         form.reset()
         setSelectedAddress(null)
+
+        if (newAddress && 'id' in newAddress) {
+          updateCartShippingAddressMutation({
+            shippingAddressId: newAddress.id,
+          })
+        }
       },
       onError: () => {
         toast.error('Erro ao salvar endereço. Tente novamente.')
@@ -132,6 +144,26 @@ export function Addresses({ shippingAddresses }: IAddressesProps) {
             </>
           )}
         </RadioGroup>
+
+        {selectedAddress && selectedAddress !== 'add_new' && (
+          <div className="mt-4">
+            <Button
+              className="w-full"
+              disabled={isUpdatingCart}
+              onClick={() => {
+                updateCartShippingAddressMutation({
+                  shippingAddressId: selectedAddress,
+                })
+              }}
+            >
+              {isUpdatingCart ? (
+                <Loader2 className="animate-spin" />
+              ) : (
+                'Ir para pagamento'
+              )}
+            </Button>
+          </div>
+        )}
 
         {selectedAddress === 'add_new' && (
           <Card className="mt-4">

@@ -22,19 +22,24 @@ export async function createShippingAddressAction(
     throw new Error('Unauthorized')
   }
 
-  await db.insert(shippingAddressTable).values({
-    userId: session.user.id,
-    recipientName: data.fullName,
-    street: data.address,
-    number: data.number,
-    complement: data.complement,
-    city: data.city,
-    state: data.state,
-    neighborhood: data.neighborhood,
-    zipCode: data.cep,
-    country: 'Brasil',
-    phone: data.phone,
-    email: data.email,
-    cpfOrCnpj: data.cpf,
-  })
+  const [newAddress] = await db
+    .insert(shippingAddressTable)
+    .values({
+      userId: session.user.id,
+      recipientName: data.fullName,
+      street: data.address,
+      number: data.number,
+      complement: data.complement,
+      city: data.city,
+      state: data.state,
+      neighborhood: data.neighborhood,
+      zipCode: data.cep,
+      country: 'Brasil',
+      phone: data.phone,
+      email: data.email,
+      cpfOrCnpj: data.cpf,
+    })
+    .returning()
+
+  return newAddress
 }
