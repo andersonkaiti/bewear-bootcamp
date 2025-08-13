@@ -14,10 +14,12 @@ import { Input } from '@components/ui/input'
 import { Label } from '@components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useCreateShippingAddress } from '@hooks/mutations/use-create-shipping-address'
 import { Loader2 } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { PatternFormat } from 'react-number-format'
+import { toast } from 'sonner'
 import z from 'zod'
 
 const addressFormSchema = z.object({
@@ -34,13 +36,16 @@ const addressFormSchema = z.object({
   complement: z.string().optional(),
   neighborhood: z.string().min(1, 'Bairro é obrigatório.'),
   city: z.string().min(1, 'Cidade é obrigatória.'),
-  state: z.string().min(2, 'Estado é obrigatório.').max(2, 'Estado inválido.'),
+  state: z.string().min(1, 'Estado é obrigatório.'),
 })
 
 type AddressFormState = z.infer<typeof addressFormSchema>
 
 export function Addresses() {
   const [selectedAddress, setSelectedAddress] = useState<string | null>(null)
+
+  const { mutate: createShippingAddressMutation, isPending } =
+    useCreateShippingAddress()
 
   const form = useForm<AddressFormState>({
     resolver: zodResolver(addressFormSchema),
@@ -60,7 +65,16 @@ export function Addresses() {
   })
 
   function onSubmit(values: AddressFormState) {
-    console.log(values)
+    createShippingAddressMutation(values, {
+      onSuccess: () => {
+        toast.success('Endereço salvo com sucesso!')
+        form.reset()
+        setSelectedAddress(null)
+      },
+      onError: () => {
+        toast.error('Erro ao salvar endereço. Tente novamente.')
+      },
+    })
   }
 
   return (
@@ -257,11 +271,7 @@ export function Addresses() {
                         <FormItem>
                           <FormLabel>Estado</FormLabel>
                           <FormControl>
-                            <Input
-                              maxLength={2}
-                              placeholder="Digite o estado"
-                              {...field}
-                            />
+                            <Input placeholder="Digite o estado" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -269,12 +279,8 @@ export function Addresses() {
                     />
                   </div>
 
-                  <Button
-                    className="w-full"
-                    disabled={form.formState.isSubmitting}
-                    type="submit"
-                  >
-                    {form.formState.isSubmitting ? (
+                  <Button className="w-full" disabled={isPending} type="submit">
+                    {isPending ? (
                       <Loader2 className="animate-spin" />
                     ) : (
                       'Salvar endereço'
