@@ -19,11 +19,13 @@ import { useCreateShippingAddress } from '@hooks/mutations/use-create-shipping-a
 import { useUpdateCartShippingAddress } from '@hooks/mutations/use-update-cart-shipping-address'
 import { useShippingAddresses } from '@hooks/queries/use-shipping-addresses'
 import { Loader2 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { PatternFormat } from 'react-number-format'
 import { toast } from 'sonner'
 import z from 'zod'
+import { formatAddress } from '../../_helpers/address'
 
 const addressFormSchema = z.object({
   email: z.email('E-mail inválido.'),
@@ -53,6 +55,8 @@ export function Addresses({
   shippingAddresses,
   defaultShippingAddressId,
 }: IAddressesProps) {
+  const router = useRouter()
+
   const [selectedAddress, setSelectedAddress] = useState<string | null>(
     defaultShippingAddressId
   )
@@ -64,7 +68,7 @@ export function Addresses({
     useCreateShippingAddress()
 
   const {
-    mutate: updateCartShippingAddressMutation,
+    mutateAsync: updateCartShippingAddressMutation,
     isPending: isUpdatingCart,
   } = useUpdateCartShippingAddress()
 
@@ -104,6 +108,24 @@ export function Addresses({
     })
   }
 
+  async function handleGoToPayment() {
+    if (!selectedAddress || selectedAddress === 'add_new') {
+      return
+    }
+
+    try {
+      await updateCartShippingAddressMutation({
+        shippingAddressId: selectedAddress,
+      })
+
+      toast.success('Endereço selecionado para entrega!')
+      router.push('/cart/confirmation')
+    } catch (error) {
+      toast.error('Erro ao selecionar endereço. Tente novamente.')
+      console.log(error)
+    }
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -126,13 +148,7 @@ export function Addresses({
                         className="flex-1 cursor-pointer"
                         htmlFor={address.id}
                       >
-                        <p>
-                          {address.recipientName}, {address.street},{' '}
-                          {address.number}
-                          {address.complement && `, ${address.complement}`},{' '}
-                          {address.neighborhood}, {address.city} -{' '}
-                          {address.state}, CEP: {address.zipCode}
-                        </p>
+                        <p>{formatAddress(address)}</p>
                       </Label>
                     </div>
                   </CardContent>
@@ -156,11 +172,7 @@ export function Addresses({
             <Button
               className="w-full rounded-full"
               disabled={isUpdatingCart}
-              onClick={() => {
-                updateCartShippingAddressMutation({
-                  shippingAddressId: selectedAddress,
-                })
-              }}
+              onClick={handleGoToPayment}
             >
               {isUpdatingCart ? (
                 <Loader2 className="animate-spin" />
