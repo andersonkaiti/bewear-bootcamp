@@ -48,7 +48,7 @@ export default async function IdentificationPage() {
   )
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-4">
       <Header />
 
       <div className="space-y-4 px-5">
@@ -71,7 +71,9 @@ export default async function IdentificationPage() {
         />
       </div>
 
-      <Footer />
+      <div className="mt-12">
+        <Footer />
+      </div>
     </div>
   )
 }
