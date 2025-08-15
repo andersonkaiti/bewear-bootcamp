@@ -53,10 +53,22 @@ export async function finishOrderAction() {
     const [order] = await tx
       .insert(orderTable)
       .values({
-        ...cart.shippingAddress,
+        number: cart.shippingAddress.number,
+        recipientName: cart.shippingAddress.recipientName,
+        street: cart.shippingAddress.street,
+        state: cart.shippingAddress.state,
+        city: cart.shippingAddress.city,
+        country: cart.shippingAddress.country,
+        cpfOrCnpj: cart.shippingAddress.cpfOrCnpj,
+        createdAt: new Date(),
+        email: cart.shippingAddress.email,
+        neighborhood: cart.shippingAddress.neighborhood,
         userId: session.user.id,
         totalPriceInCents,
-        shippingAddressId: cart.shippingAddress?.id,
+        zipCode: cart.shippingAddress.zipCode,
+        complement: cart.shippingAddress.complement,
+        phone: cart.shippingAddress.phone,
+        shippingAddressId: cart.shippingAddress.id,
       })
       .returning()
 
@@ -73,7 +85,7 @@ export async function finishOrderAction() {
       }))
 
     await tx.insert(orderItemTable).values(cartItemPayload)
-
+    await tx.delete(cartTable).where(eq(cartTable.id, cart.id))
     await tx.delete(cartItemTable).where(eq(cartItemTable.cartId, cart.id))
   })
 }
