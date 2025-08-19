@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/nursery/noUnknownAtRule: no necessity */
 @import "tailwindcss";
 @import "tw-animate-css";
 

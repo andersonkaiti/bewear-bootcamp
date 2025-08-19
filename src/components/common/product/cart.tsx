@@ -15,7 +15,7 @@ import Link from 'next/link'
 import { CartItem } from './cart-item'
 
 export function Cart() {
-  const { data: cart } = useCart()
+  const { data: cart } = useCart({})
 
   return (
     <Sheet>
