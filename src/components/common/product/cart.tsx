@@ -20,7 +20,7 @@ export function Cart() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button size="icon" variant="outline">
+        <Button size="icon" variant="ghost">
           <ShoppingBasketIcon />
         </Button>
       </SheetTrigger>
