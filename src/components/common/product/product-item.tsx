@@ -27,7 +27,7 @@ export function ProductItem({ product, className }: IProductItemProps) {
         width={0}
       />
 
-      <div className={cn('flex max-w-50 flex-col gap-1', className)}>
+      <div className={cn('flex max-w-50 flex-col gap-1 lg:max-w-64', className)}>
         <p className="truncate font-medium text-sm">{product.name}</p>
         <p className="truncate font-medium text-muted-foreground text-sm">
           {product.description}
