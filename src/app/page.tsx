@@ -27,11 +27,11 @@ export default async function Home() {
   return (
     <>
       <Header />
-      <div className="space-y-6">
-        <div className="px-5">
+      <div className="space-y-6 lg:mx-auto lg:max-w-7xl">
+        <div className="px-5 lg:px-10">
           <Image
             alt="Leve uma vida com estilo"
-            className="h-auto w-full"
+            className="h-auto w-full lg:rounded-3xl"
             height={0}
             sizes="100vw"
             src="/banner-01.png"
@@ -41,14 +41,14 @@ export default async function Home() {
 
         <ProductList products={products} title="Mais vendidos" />
 
-        <div className="px-5">
+        <div className="px-5 lg:px-10">
           <CategorySelector categories={categories} />
         </div>
 
-        <div className="px-5">
+        <div className="px-5 lg:px-10">
           <Image
             alt="Leve uma vida com estilo"
-            className="h-auto w-full"
+            className="h-auto w-full lg:rounded-3xl"
             height={0}
             sizes="100vw"
             src="/banner-02.png"
