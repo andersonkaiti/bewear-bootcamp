@@ -31,9 +31,9 @@ export default async function CategoryPage({ params }: ICategoryPageProps) {
     <>
       <Header />
 
-      <div className="space-y-6 px-5">
+      <div className="space-y-6 px-5 lg:mx-auto lg:max-w-7xl lg:px-10">
         <h2 className="font-semibold text-xl">{category.name}</h2>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           {products.map((product) => (
             <ProductItem
               className="max-w-full"

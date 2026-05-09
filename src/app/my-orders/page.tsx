@@ -35,7 +35,7 @@ export default async function MyOrdersPage() {
     <>
       <Header />
 
-      <div className="px-5">
+      <div className="px-5 lg:mx-auto lg:max-w-7xl lg:px-10">
         <Orders
           orders={orders.map((order) => ({
             id: order.id,
