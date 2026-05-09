@@ -52,7 +52,7 @@ export default async function ConfirmationPage() {
     <div className="space-y-4">
       <Header />
 
-      <div className="space-y-4 px-5">
+      <div className="space-y-4 px-5 lg:mx-auto lg:grid lg:max-w-7xl lg:grid-cols-[1fr_400px] lg:items-start lg:gap-8 lg:space-y-0 lg:px-10">
         <Card>
           <CardHeader>
             <CardTitle>Identificação</CardTitle>
