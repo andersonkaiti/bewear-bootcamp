@@ -2,6 +2,7 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar'
 import { Button } from '@components/ui/button'
+import { Separator } from '@components/ui/separator'
 import {
   Sheet,
   SheetContent,
@@ -20,15 +21,34 @@ export function Header() {
   const { data: session } = authClient.useSession()
 
   return (
-    <header className="flex items-center justify-between p-5">
-      <Link href="/">
-        <Image alt="BEWEAR" height={26.14} src="/logo.svg" width={100} />
-      </Link>
+    <header className="flex items-center justify-between p-5 lg:mx-auto lg:max-w-7xl lg:px-10">
+      <div className="flex items-center gap-8">
+        <Link href="/">
+          <Image alt="BEWEAR" height={26.14} src="/logo.svg" width={100} />
+        </Link>
+
+        <nav className="hidden items-center gap-6 lg:flex">
+          <Link
+            className="text-sm font-medium transition-opacity hover:opacity-70"
+            href="/"
+          >
+            Início
+          </Link>
+          {session?.user && (
+            <Link
+              className="text-sm font-medium transition-opacity hover:opacity-70"
+              href="/my-orders"
+            >
+              Meus Pedidos
+            </Link>
+          )}
+        </nav>
+      </div>
 
       <div className="flex items-center gap-2">
         <Sheet>
           <SheetTrigger asChild>
-            <Button size="icon" variant="outline">
+            <Button className="lg:hidden" size="icon" variant="ghost">
               <MenuIcon />
             </Button>
           </SheetTrigger>
@@ -79,7 +99,50 @@ export function Header() {
           </SheetContent>
         </Sheet>
 
-        {session?.user && <Cart />}
+        {session?.user && (
+          <div className="hidden items-center gap-3 lg:flex">
+            <Avatar>
+              <AvatarImage src={session.user.image as string | undefined} />
+              <AvatarFallback>
+                {getUserInitials(session.user.name)}
+              </AvatarFallback>
+            </Avatar>
+            <div>
+              <p className="text-sm font-semibold">{session.user.name}</p>
+              <p className="text-muted-foreground text-xs">
+                {session.user.email}
+              </p>
+            </div>
+            <Button
+              onClick={() => authClient.signOut()}
+              size="icon"
+              variant="outline"
+            >
+              <LogOutIcon />
+            </Button>
+          </div>
+        )}
+
+        {!session?.user && (
+          <Button
+            asChild
+            className="hidden lg:flex"
+            size="sm"
+            variant="outline"
+          >
+            <Link href="/authentication">
+              <LogInIcon />
+              Entrar
+            </Link>
+          </Button>
+        )}
+
+        {session?.user && (
+          <>
+            <Separator className="!h-5" orientation="vertical" />
+            <Cart />
+          </>
+        )}
       </div>
     </header>
   )
