@@ -21,7 +21,7 @@ export function ProductActions({ productVariantId }: IProductActionsProps) {
   }
   return (
     <>
-      <div className="space-y-4 px-5">
+      <div className="space-y-4 px-5 lg:px-0">
         <h3 className="font-medium">Quantidade</h3>
 
         <div className="flex w-[100px] items-center justify-between rounded-lg border">
@@ -35,7 +35,7 @@ export function ProductActions({ productVariantId }: IProductActionsProps) {
         </div>
       </div>
 
-      <div className="flex flex-col gap-4 px-4">
+      <div className="flex flex-col gap-4 px-4 lg:px-0">
         <AddToCartButton
           productVariantId={productVariantId}
           quantity={quantity}
