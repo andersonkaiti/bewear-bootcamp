@@ -6,10 +6,10 @@ export default function Loading() {
     <>
       <Header />
 
-      <div className="space-y-6 px-5">
+      <div className="space-y-6 px-5 lg:mx-auto lg:max-w-7xl lg:px-10">
         <Skeleton className="h-7 w-1/2" />
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           {[...new Array(4)].map((_, index: number) => (
             // biome-ignore lint/suspicious/noArrayIndexKey: simple sintax
             <div className="flex flex-col gap-4" key={index}>
