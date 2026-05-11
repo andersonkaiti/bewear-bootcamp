@@ -7,39 +7,45 @@ export default function Loading() {
     <>
       <Header />
 
-      <div className="flex flex-col space-y-7.5 pb-4">
-        <Skeleton className="aspect-square min-h-94 w-full" />
+      <div className="flex flex-col pb-4 lg:mx-auto lg:max-w-7xl">
+        <div className="flex flex-col space-y-7.5 lg:flex-row lg:items-start lg:gap-10 lg:space-y-0 lg:px-10 lg:py-10">
+          <div className="lg:w-1/2">
+            <Skeleton className="aspect-square min-h-94 w-full lg:rounded-3xl" />
+          </div>
 
-        <div className="flex items-center gap-4 px-5">
-          <Skeleton className="size-17 rounded-xl" />
-          <Skeleton className="size-17 rounded-xl" />
+          <div className="flex flex-col space-y-7.5 lg:w-1/2">
+            <div className="flex items-center gap-4 px-5 lg:px-0">
+              <Skeleton className="size-17 rounded-xl" />
+              <Skeleton className="size-17 rounded-xl" />
+            </div>
+
+            <div className="space-y-2 px-5 lg:px-0">
+              <Skeleton className="h-4 w-20" />
+
+              <Skeleton className="h-3 w-10" />
+
+              <Skeleton className="h-6 w-22" />
+            </div>
+
+            <div className="space-y-4 px-5 lg:px-0">
+              <Skeleton className="h-4 w-30" />
+
+              <Skeleton className="h-9 w-30" />
+            </div>
+
+            <div className="flex flex-col gap-4 px-5 lg:px-0">
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-9 w-full" />
+            </div>
+
+            <div className="space-y-2 px-5 lg:px-0">
+              <Skeleton className="h-3 w-full" />
+              <Skeleton className="h-3 w-1/2" />
+            </div>
+          </div>
         </div>
 
-        <div className="space-y-2 px-5">
-          <Skeleton className="h-4 w-20" />
-
-          <Skeleton className="h-3 w-10" />
-
-          <Skeleton className="h-6 w-22" />
-        </div>
-
-        <div className="space-y-4 px-5">
-          <Skeleton className="h-4 w-30" />
-
-          <Skeleton className="h-9 w-30" />
-        </div>
-
-        <div className="flex flex-col gap-4 px-5">
-          <Skeleton className="h-10 w-full" />
-          <Skeleton className="h-9 w-full" />
-        </div>
-
-        <div className="space-y-2 px-5">
-          <Skeleton className="h-3 w-full" />
-          <Skeleton className="h-3 w-1/2" />
-        </div>
-
-        <div className="space-y-6">
+        <div className="mt-6 space-y-6">
           <Skeleton className="mx-5 h-4 w-1/2" />
 
           <div className="flex w-full gap-4 overflow-x-auto px-5 [&::-webkit-scrollbar]:hidden">
@@ -60,9 +66,9 @@ export default function Loading() {
               </div>
             </div>
           </div>
-        </div>
 
-        <Footer />
+          <Footer />
+        </div>
       </div>
     </>
   )
