@@ -31,7 +31,7 @@ export default async function Home() {
         <div className="px-5 lg:px-10">
           <Image
             alt="Leve uma vida com estilo"
-            className="h-auto w-full lg:rounded-3xl"
+            className="h-auto w-full lg:aspect-[16/6] lg:object-cover lg:object-top lg:rounded-3xl"
             height={0}
             sizes="100vw"
             src="/banner-01.png"
@@ -48,7 +48,7 @@ export default async function Home() {
         <div className="px-5 lg:px-10">
           <Image
             alt="Leve uma vida com estilo"
-            className="h-auto w-full lg:rounded-3xl"
+            className="h-auto w-full lg:aspect-[16/6] lg:object-cover lg:object-top lg:rounded-3xl"
             height={0}
             sizes="100vw"
             src="/banner-02.png"
